@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-const Base_Url = "http://localhost:3000";
-
+// const Base_Url = "http://localhost:3000";
+const Base_Url = "http://13.60.253.32"
 const Chat = () => {
   const { connectionId } = useParams();
   const user = useSelector((store) => store.user);
