@@ -158,10 +158,22 @@ const EditProfile = () => {
                </div>
             </div>
 
-            <div>
-              <label className="text-[10px] text-gray-500 uppercase ml-1">Age</label>
-              <input type="number" name="age" value={formData.age} onChange={handleChange} className="w-full bg-[#121212] p-3 rounded-xl border border-white/10" />
-            </div>
+           <div>
+  <label className="text-[10px] text-gray-500 uppercase ml-1">
+    Age {!formData.isAgeEditable && "(Locked)"}
+  </label>
+  <input
+    type="number"
+    name="age"
+    value={formData.age}
+    onChange={handleChange}
+    // ✅ Use the flag to disable the input if needed
+    disabled={!formData.isAgeEditable}
+    className={`w-full bg-[#121212] p-3 rounded-xl border border-white/10 transition-all ${
+      !formData.isAgeEditable ? "opacity-50 cursor-not-allowed border-none" : "focus:border-blue-500"
+    }`}
+  />
+</div>
 
             <div>
               <label className="text-[10px] text-gray-500 uppercase ml-1">Gender</label>

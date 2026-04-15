@@ -12,17 +12,24 @@ const Connections = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const fetchConnections = async () => {
-        try {
-            const res = await axios.get(Base_Url + "/user/connections", { withCredentials: true });
-            const connectionData = res.data?.data || res.data;
+ const fetchConnections = async () => {
+    try {
+        const res = await axios.get(Base_Url + "/user/connections", { withCredentials: true });
+
+        // Ensure we are grabbing the array correctly
+        const connectionData = res.data?.data || res.data;
+
+        if (Array.isArray(connectionData)) {
             dispatch(addConnections(connectionData));
-        } catch (err) {
-            console.error("Failed to fetch connections:", err);
-        } finally {
-            setLoading(false);
         }
-    };
+    } catch (err) {
+        console.error("Failed to fetch connections:", err);
+        // If 401, you might want to redirect to login
+        if (err.response?.status === 401) navigate("/login");
+    } finally {
+        setLoading(false);
+    }
+};
 
     useEffect(() => {
         fetchConnections();

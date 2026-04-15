@@ -3,25 +3,48 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Base_Url } from "../utils/constants";
 import { addFeed, removeUserFromFeed } from "../utils/feedSlice";
-import UserCard from "./Usercard";
+import UserCard from "./UserCard";
 
 const Feed = () => {
   const dispatch = useDispatch();
   const feed = useSelector((store) => store.feed);
 
-  const getFeed = async () => {
-    // ✅ FIX: Only fetch if feed is actually null/undefined
-    if (feed) return;
+  // const getFeed = async () => {
+  //   // ✅ FIX: Only fetch if feed is actually null/undefined
+  //   if (feed) return;
 
-    try {
-      const res = await axios.get(Base_Url + "/user/feed", { withCredentials: true });
-      // Ensure we are grabbing the array correctly
-      const feedData = res.data?.data || res.data;
-      dispatch(addFeed(feedData));
-    } catch (err) {
-      console.error("Feed Fetch Error:", err);
+  //   try {
+  //     const res = await axios.get(Base_Url + "/user/feed", { withCredentials: true });
+  //     // Ensure we are grabbing the array correctly
+  //     const feedData = res.data?.data || res.data;
+  //     dispatch(addFeed(feedData));
+  //   } catch (err) {
+  //     console.error("Feed Fetch Error:", err);
+  //   }
+  // };
+
+  const getFeed = async () => {
+  // Only fetch if feed is empty/null AND we aren't already fetching
+  if (feed && feed.length > 0) return;
+
+  try {
+    const res = await axios.get(Base_Url + "/user/feed", {
+      withCredentials: true
+    });
+
+    const feedData = res.data?.data || res.data;
+
+    // If backend returns an empty array, ensure Redux gets an empty array []
+    // rather than null to trigger the "Desert" view correctly.
+    dispatch(addFeed(Array.isArray(feedData) ? feedData : []));
+  } catch (err) {
+    console.error("Feed Fetch Error:", err);
+    // If the error is 401, they need to log in again
+    if (err.response?.status === 401) {
+       // navigate("/login"); (Import navigate if you want this)
     }
-  };
+  }
+};
 
   const handleRequest = async (status, _id) => {
     try {

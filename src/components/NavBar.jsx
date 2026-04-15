@@ -18,16 +18,28 @@ const NavBar = () => {
 
   const isLoggedIn = user && user.firstName;
 
-  const handleLogout = async () => {
-    try {
-      await axios.post(`${Base_Url}/logout`, {}, { withCredentials: true });
-      dispatch(removeUser());
-      navigate("/login", { replace: true });
-    } catch (err) {
-      console.error("Logout failed:", err);
-    }
-  };
-
+  // const handleLogout = async () => {
+  //   try {
+  //     await axios.post(`${Base_Url}/logout`, {}, { withCredentials: true });
+  //     dispatch(removeUser());
+  //     navigate("/login", { replace: true });
+  //   } catch (err) {
+  //     console.error("Logout failed:", err);
+  //   }
+  // };
+const handleLogout = async () => {
+  try {
+    // 1. Tell the backend to clear the cookie
+    await axios.post(`${Base_Url}/logout`, {}, { withCredentials: true });
+  } catch (err) {
+    console.error("Backend logout failed or was unreachable:", err);
+    // Even if the server is down, we want to clear the local session
+  } finally {
+    // 2. ALWAYS clear Redux and redirect
+    dispatch(removeUser());
+    navigate("/login", { replace: true });
+  }
+};
   return (
     <div className="navbar bg-base-300 shadow-sm fixed top-0 z-50">
       <div className="flex-1">
