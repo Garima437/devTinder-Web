@@ -265,9 +265,10 @@ const Chat = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get(`${Base_Url}/user/chat/${connectionId}`, {
-          withCredentials: true,
-        });
+     // ✅ Correct way to call the history API
+const res = await axios.get(Base_Url + "/user/chat/" + connectionId, {
+  withCredentials: true,
+});
         setMessages(res.data?.data || []);
       } catch (err) {
         console.error("History Load Error:", err);
