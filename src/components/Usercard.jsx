@@ -7,13 +7,8 @@ const UserCard = ({ user, handleRequest }) => {
   // 🛠️ FIXED: Destructure photoUrl instead of photo
   const { _id, firstName, lastName, age, photoUrl, about, skills, gender } = user;
 
-  const defaultMale = "https://avatar.iran.liara.run/public/boy";
-  const defaultFemale = "https://avatar.iran.liara.run/public/girl";
-  const normalizedGender = gender?.toLowerCase();
-
   const getDefaultAvatar = () => {
-    if (normalizedGender === "female") return defaultFemale;
-    return defaultMale;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName + ' ' + lastName)}&background=random&color=fff&size=150`;
   };
 
   // 🛠️ FIXED: Use photoUrl for the final source check

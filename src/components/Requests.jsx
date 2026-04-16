@@ -46,8 +46,10 @@ const Requests = () => {
   /* ================= TINDER-STYLE DETAIL VIEW ================= */
   if (selectedUser) {
     const user = selectedUser.fromUserId;
-    // ✅ PRO-TIP: Check if backend uses 'photo' or 'photoUrl'
-    const userPhoto = user.photoUrl || user.photo || "https://avatar.iran.liara.run/public/boy";
+    const getDefaultAvatar = (user) =>
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=random&color=fff&size=150`;
+
+    const userPhoto = user.photoUrl || user.photo || getDefaultAvatar(user);
 
     return (
       <div className="fixed inset-0 z-[70] bg-black overflow-y-auto animate-slideUp">
@@ -127,7 +129,10 @@ const Requests = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
         {requests?.map((req) => {
-          const cardPhoto = req.fromUserId?.photoUrl || req.fromUserId?.photo || "https://avatar.iran.liara.run/public/boy";
+          const getDefaultAvatar = (user) =>
+            `https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=random&color=fff&size=150`;
+
+          const cardPhoto = req.fromUserId?.photoUrl || req.fromUserId?.photo || getDefaultAvatar(req.fromUserId);
           return (
             <div
               key={req._id}

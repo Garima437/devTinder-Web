@@ -12,24 +12,24 @@ const Connections = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
- const fetchConnections = async () => {
-    try {
-        const res = await axios.get(Base_Url + "/user/connections", { withCredentials: true });
+    const fetchConnections = async () => {
+        try {
+            const res = await axios.get(Base_Url + "/user/connections", { withCredentials: true });
 
-        // Ensure we are grabbing the array correctly
-        const connectionData = res.data?.data || res.data;
+            // Ensure we are grabbing the array correctly
+            const connectionData = res.data?.data || res.data;
 
-        if (Array.isArray(connectionData)) {
-            dispatch(addConnections(connectionData));
+            if (Array.isArray(connectionData)) {
+                dispatch(addConnections(connectionData));
+            }
+        } catch (err) {
+            console.error("Failed to fetch connections:", err);
+            // If 401, you might want to redirect to login
+            if (err.response?.status === 401) navigate("/login");
+        } finally {
+            setLoading(false);
         }
-    } catch (err) {
-        console.error("Failed to fetch connections:", err);
-        // If 401, you might want to redirect to login
-        if (err.response?.status === 401) navigate("/login");
-    } finally {
-        setLoading(false);
-    }
-};
+    };
 
     useEffect(() => {
         fetchConnections();
@@ -63,14 +63,14 @@ const Connections = () => {
         navigate(`/chat/${sharedRoomId}`);
     };
 
-    const getDefaultAvatar = (gender) =>
-        gender?.toLowerCase() === "female"
-            ? "https://avatar.iran.liara.run/public/girl"
-            : "https://avatar.iran.liara.run/public/boy";
+    const getDefaultAvatar = (user) =>
+        user.gender?.toLowerCase() === "female"
+            ? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=random&color=fff&size=150`
+            : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=random&color=fff&size=150`;
 
     /* ================= TINDER EXPANDED PROFILE VIEW ================= */
     if (selectedUser) {
-        const displayPhoto = selectedUser.photoUrl || getDefaultAvatar(selectedUser.gender);
+        const displayPhoto = selectedUser.photoUrl || getDefaultAvatar(selectedUser);
 
         return (
             <div className="fixed inset-0 z-[70] bg-black overflow-y-auto animate-slideUp">

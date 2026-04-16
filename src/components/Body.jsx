@@ -100,9 +100,10 @@ function Body() {
     const fetchUser = async () => {
       try {
         // ✅ FIXED: Changed /profile/view to /profile/me to match backend
-        const res = await axios.get(`${Base_Url}/profile/me`, {
-          withCredentials: true,
-        });
+        // const res = await axios.get(`${Base_Url}/profile/me`, {
+        //   withCredentials: true,
+        // });
+        const res = await axios.get(Base_Url + "/profile/me", { withCredentials: true });
 
         const userData = res.data.data || res.data.user || res.data;
         dispatch(addUser(userData));
