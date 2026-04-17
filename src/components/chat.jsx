@@ -13,7 +13,7 @@ const Chat = () => {
   const socketRef = useRef(null);
   const scrollRef = useRef(null);
 
-  // 1. Fetch Chat History (Load previous messages)
+  // 1. Fetch Chat History
   useEffect(() => {
     const fetchHistory = async () => {
       try {
@@ -30,7 +30,7 @@ const Chat = () => {
 
   // 2. Setup Real-time Connection
   useEffect(() => {
-    if (!user?._id || !connectionId) return;
+    if (!user?._id || !connectionId || !Socket_Url) return;
 
     const socketInstance = io(Socket_Url, {
       withCredentials: true,
@@ -47,7 +47,6 @@ const Chat = () => {
 
     socketInstance.on("messageReceived", (msg) => {
       setMessages((prev) => {
-        // Prevent duplicate messages if the backend broadcasts back to sender
         const isDuplicate = prev.some((m) => m._id === msg._id);
         if (isDuplicate) return prev;
         return [...prev, msg];
@@ -60,7 +59,6 @@ const Chat = () => {
 
     return () => {
       if (socketInstance) {
-        socketInstance.off("messageReceived");
         socketInstance.disconnect();
       }
     };
@@ -87,10 +85,9 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-[calc(100vh-80px)] bg-black text-white mt-16 max-w-4xl mx-auto border-x border-white/5">
-      {/* Chat Header */}
       <div className="p-4 bg-zinc-900/50 backdrop-blur-md border-b border-white/10 flex items-center gap-4">
         <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center font-bold">
-          {connectionId.substring(0, 2).toUpperCase()}
+          {connectionId?.substring(0, 2).toUpperCase()}
         </div>
         <div>
           <h2 className="font-bold text-sm">Developer Chat</h2>
@@ -98,7 +95,6 @@ const Chat = () => {
         </div>
       </div>
 
-      {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
         {messages.map((msg, index) => {
           const isMe = msg.senderId === user?._id || msg.senderId?._id === user?._id;
@@ -116,7 +112,6 @@ const Chat = () => {
         <div ref={scrollRef} />
       </div>
 
-      {/* Input Area */}
       <div className="p-4 bg-zinc-900/50 border-t border-white/10">
         <div className="flex gap-2">
           <input
