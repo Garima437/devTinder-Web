@@ -29,10 +29,12 @@ const Chat = () => {
   }, [connectionId]);
 
   // 2. Setup Real-time Connection
+// 2. Setup Real-time Connection
   useEffect(() => {
-    if (!user?._id || !connectionId || !Socket_Url) return;
+    if (!user?._id || !connectionId) return;
 
-    const socketInstance = io(Socket_Url, {
+    // 🔥 HARDCODED URL - No more ReferenceErrors
+    const socketInstance = io("http://13.60.253.32", {
       withCredentials: true,
       transports: ["websocket"],
       path: "/socket.io/",
@@ -51,10 +53,6 @@ const Chat = () => {
         if (isDuplicate) return prev;
         return [...prev, msg];
       });
-    });
-
-    socketInstance.on("connect_error", (err) => {
-      console.error("❌ Socket Connection Error:", err.message);
     });
 
     return () => {
