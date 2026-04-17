@@ -8,21 +8,6 @@ import UserCard from "./UserCard";
 const Feed = () => {
   const dispatch = useDispatch();
   const feed = useSelector((store) => store.feed);
-
-  // const getFeed = async () => {
-  //   // ✅ FIX: Only fetch if feed is actually null/undefined
-  //   if (feed) return;
-
-  //   try {
-  //     const res = await axios.get(Base_Url + "/user/feed", { withCredentials: true });
-  //     // Ensure we are grabbing the array correctly
-  //     const feedData = res.data?.data || res.data;
-  //     dispatch(addFeed(feedData));
-  //   } catch (err) {
-  //     console.error("Feed Fetch Error:", err);
-  //   }
-  // };
-
   const getFeed = async () => {
   // Only fetch if feed is empty/null AND we aren't already fetching
   if (feed && feed.length > 0) return;

@@ -18,15 +18,8 @@ const NavBar = () => {
 
   const isLoggedIn = user && user.firstName;
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await axios.post(`${Base_Url}/logout`, {}, { withCredentials: true });
-  //     dispatch(removeUser());
-  //     navigate("/login", { replace: true });
-  //   } catch (err) {
-  //     console.error("Logout failed:", err);
-  //   }
-  // };
+
+
 const handleLogout = async () => {
   try {
     // 1. Tell the backend to clear the cookie

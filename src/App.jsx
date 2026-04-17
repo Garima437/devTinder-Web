@@ -16,7 +16,7 @@ import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 // src/App.js
 import Chat from "./components/chat"; // 👈 Use 'chat' if the file is chat.jsx
-
+import socket from './utils/socket';
 function App() {
   return (
     <Provider store={appStore}>
