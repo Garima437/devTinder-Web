@@ -15,6 +15,7 @@ import { Toaster } from "react-hot-toast";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 // src/App.js
+import Membership from "./components/Membership";
 import Chat from "./components/chat"; // 👈 Use 'chat' if the file is chat.jsx
 import socket from './utils/socket';
 function App() {
@@ -33,6 +34,7 @@ function App() {
         />
         <BrowserRouter>
           <Routes>
+            <Route path="/membership" element={<Membership />} />
             <Route path="/" element={<Body />}>
               <Route index element={<Feed />} />
               <Route path="feed" element={<Feed />} />
