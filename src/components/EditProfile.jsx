@@ -3,7 +3,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { Base_Url } from "../utils/constants";
-import Usercard from "./UserCard";
+import Usercard from "./Usercard";
 import toast from "react-hot-toast";
 
 const EditProfile = () => {
