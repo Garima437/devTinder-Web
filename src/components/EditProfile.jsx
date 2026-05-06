@@ -3,7 +3,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { Base_Url } from "../utils/constants";
-import Usercard from "./Usercard";
+import Usercard from "./UserCard";
 import toast from "react-hot-toast";
 
 const EditProfile = () => {
@@ -123,6 +123,20 @@ const EditProfile = () => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    const confirm1 = window.confirm("Are you sure you want to delete your account? This cannot be undone.");
+    if (!confirm1) return;
+    const confirm2 = window.confirm("This will permanently delete all your data. Continue?");
+    if (!confirm2) return;
+    try {
+      await axios.delete(Base_Url + "/profile/delete", { withCredentials: true });
+      dispatch(removeUser());
+      navigate("/login");
+    } catch (err) {
+      alert("Failed to delete account: " + err.message);
+    }
+  };
+
   return (
     <div className="flex flex-col lg:flex-row justify-center items-start min-h-screen bg-black p-6 gap-12 pt-24 text-white">
       <div className="w-full max-w-md">
@@ -197,6 +211,14 @@ const EditProfile = () => {
 
           <button type="submit" disabled={loading} className="w-full mt-8 bg-blue-600 hover:bg-blue-500 py-4 rounded-2xl font-bold">
             {loading ? "Saving..." : "Save Changes"}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleDeleteAccount}
+            className="w-full mt-4 bg-red-600 hover:bg-red-500 py-4 rounded-2xl font-bold text-white"
+          >
+            Delete Account
           </button>
         </form>
       </div>
