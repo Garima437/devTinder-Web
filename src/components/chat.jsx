@@ -120,7 +120,7 @@ const Chat = () => {
 
       <div
         className="p-4 bg-zinc-900/50 backdrop-blur-md border-b border-white/10 flex items-center gap-4 cursor-pointer hover:bg-zinc-800/50 transition"
-        onClick={() => otherUser && navigate(`/profile`)}
+onClick={() => otherUser && navigate(`/profile/${otherUser._id}`)}
       >
         <img
           src={otherUser?.photoUrl || DEFAULT_AVATAR}
@@ -139,7 +139,7 @@ const Chat = () => {
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {messages.map((msg, index) => (
           <div key={msg._id || index} className={`chat ${msg.senderId === user?._id || msg.senderId?._id === user?._id ? "chat-end" : "chat-start"}`}>
-            <div className={`chat-bubble ${msg.senderId === user?._id || msg.senderId?._id === user?._id ? "bg-blue-600" : "bg-zinc-800"}`}>
+<div className={`chat-bubble ${msg.senderId === user?._id || msg.senderId?._id === user?._id ? "bg-blue-600 text-white" : "bg-white text-black"}`}>
               {msg.text}
             </div>
           </div>

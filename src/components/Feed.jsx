@@ -31,22 +31,19 @@ const Feed = () => {
   }
 };
 
-  const handleRequest = async (status, _id) => {
+const handleRequest = async (status, _id) => {
     try {
-      // ✅ Use the correct endpoint from your backend
       await axios.post(
         Base_Url + "/request/send/" + status + "/" + _id,
         {},
         { withCredentials: true }
       );
-
-      // ✅ Immediate UI Update: Pop the card from Redux
-      dispatch(removeUserFromFeed(_id));
     } catch (err) {
       console.error("Request Error:", err);
+    } finally {
+      dispatch(removeUserFromFeed(_id));
     }
   };
-
   useEffect(() => {
     getFeed();
   }, []);

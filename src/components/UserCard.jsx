@@ -5,8 +5,7 @@ const UserCard = ({ user, handleRequest }) => {
   if (!user) return null;
 
   // 🛠️ FIXED: Destructure photoUrl instead of photo
-  const { _id, firstName, lastName, age, photoUrl, about, skills, gender } = user;
-
+const { _id, firstName, lastName, age, photoUrl, about, skills, gender, membership } = user;
   const getDefaultAvatar = () => {
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName + ' ' + lastName)}&background=random&color=fff&size=150`;
   };
@@ -36,12 +35,22 @@ const UserCard = ({ user, handleRequest }) => {
 
       {/* 3. USER CONTENT */}
       <div className="absolute bottom-28 left-6 right-6 text-white pointer-events-none">
-        <div className="flex items-baseline gap-2">
-          <h2 className="text-4xl font-black tracking-tight">
-            {firstName} {lastName}{age ? `, ${age}` : ""}
-          </h2>
-          {gender === 'female' ? <span className="text-pink-400 text-sm font-bold">♀</span> : <span className="text-blue-400 text-sm font-bold">♂</span>}
-        </div>
+<div className="flex items-baseline gap-2 flex-wrap">
+  <h2 className="text-4xl font-black tracking-tight">
+    {firstName} {lastName}{age ? `, ${age}` : ""}
+  </h2>
+  {gender === 'female' ? <span className="text-pink-400 text-sm font-bold">♀</span> : <span className="text-blue-400 text-sm font-bold">♂</span>}
+  {membership?.plan === 'gold' && (
+    <span className="px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/50 rounded-full text-yellow-400 text-xs font-bold">
+      👑 GOLD
+    </span>
+  )}
+  {membership?.plan === 'silver' && (
+    <span className="px-2 py-0.5 bg-gray-400/20 border border-gray-400/50 rounded-full text-gray-300 text-xs font-bold">
+      ⭐ SILVER
+    </span>
+  )}
+</div>
 
         <p className="text-gray-300 text-sm mt-2 line-clamp-2 leading-relaxed font-medium">
           {about || "No bio provided yet..."}

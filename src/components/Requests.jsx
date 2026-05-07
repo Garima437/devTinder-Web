@@ -128,11 +128,12 @@ const Requests = () => {
       )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-        {requests?.map((req) => {
+{requests?.filter(req => req.fromUserId !== null).map((req) => {
           const getDefaultAvatar = (user) =>
             `https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=random&color=fff&size=150`;
 
-          const cardPhoto = req.fromUserId?.photoUrl || req.fromUserId?.photo || getDefaultAvatar(req.fromUserId);
+const cardPhoto = req.fromUserId?.photoUrl || req.fromUserId?.photo || 
+  (req.fromUserId ? getDefaultAvatar(req.fromUserId) : "https://i.ibb.co/dsB9Zw6C/profil-jpg.png");
           return (
             <div
               key={req._id}
